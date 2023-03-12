@@ -48,6 +48,8 @@
     "types.h": "c",
     "inet.h": "c",
     "util.h": "c",
-    "wayland-server-core.h": "c"
+    "wayland-server-core.h": "c",
+    "in.h": "c",
+    "const.h": "c"
   }
 }

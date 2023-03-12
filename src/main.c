@@ -33,11 +33,11 @@ int main(int argc, char *argv[])
     struct tm current_time = *localtime(&timer);
 
     // * obtain the path mode for the given path
-    mode_t mode = path_mode(options.file);
+    mode_t mode = path_mode(options.path);
     // * if the mode is invalid (the path doesn't exist, most likely), error and exit
     if (mode == (mode_t)-1)
     {
-        printf("Error: failure in reading mode of path \"%s\"; it may not exist.\n", options.file);
+        printf("Error: failure in reading mode of path \"%s\"; it may not exist.\n", options.path);
         return EXIT_FAILURE;
     }
 
@@ -56,11 +56,11 @@ int main(int argc, char *argv[])
     // * otherwise, error and exit
     else
     {
-        printf("Error: unknown path type \"%s\"; only regular files and directories are allowed.\n", options.file);
+        printf("Error: unknown path type \"%s\"; only regular files and directories are allowed.\n", options.path);
         return EXIT_FAILURE;
     }
 
-    printf("Serving \"%s\" from IP %s and port %d\n", options.file, ip_address, ntohs(options.address.sin_port));
+    printf("Serving \"%s\" from IP %s and port %d\n", options.path, ip_address, ntohs(options.address.sin_port));
 
     return EXIT_SUCCESS;
 }

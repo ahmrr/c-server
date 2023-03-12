@@ -1,3 +1,6 @@
+# * set default goal
+.DEFAULT_GOAL:=build-obj
+
 # * compiler and options
 CC=gcc
 CFLAGS=-Wall -Wextra -I$(INCDIR) -L$(OBJDIR)
@@ -27,7 +30,7 @@ $(LIBDIR)/$(LIB): $(OBJS)
 # * compile executable
 .PHONY: build
 build:
-	$(CC) -o $(EXEDIR)/$(EXE) $(SRCDIR)/* $(CFLAGS) $(LIBFLAG)\
+	$(CC) -o $(EXEDIR)/$(EXE) $(SRCDIR)/* $(CFLAGS) $(LIBFLAG)
 
 # * build object files and link them, outputting executable
 .PHONY: build-obj
@@ -48,3 +51,8 @@ run:
 .PHONY: clean
 clean:
 	rm -f $(OBJDIR)/*.o $(EXEDIR)/$(EXE) $(LIBDIR)/$(LIB)
+
+# * compile test files
+.PHONY: test
+test:
+	$(CC) -o $(EXEDIR)/$@ $(FILES) $(CFLAGS)

@@ -26,7 +26,7 @@ int parse_arguments(int argc, char *argv[])
     options.address.sin_family = AF_INET;
     options.address.sin_addr.s_addr = inet_addr(DEFAULT_IP);
     options.address.sin_port = htons(atoi(DEFAULT_PORT));
-    options.file = "index.html";
+    options.path = "index.html";
 
     for (int i = 1; i < argc; i++)
     {
@@ -159,7 +159,7 @@ int file_handler(char *arg)
         return EXIT_FAILURE;
     }
 
-    options.file = arg;
+    options.path = arg;
 
     return EXIT_SUCCESS;
 }
