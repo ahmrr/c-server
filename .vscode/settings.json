@@ -39,6 +39,15 @@
     "string.h": "c",
     "stdio.h": "c",
     "stdlib.h": "c",
-    "unistd.h": "c"
+    "unistd.h": "c",
+    "http.h": "c",
+    "locale_t.h": "c",
+    "stdbool.h": "c",
+    "limits.h": "c",
+    "inttypes.h": "c",
+    "types.h": "c",
+    "inet.h": "c",
+    "util.h": "c",
+    "wayland-server-core.h": "c"
   }
 }

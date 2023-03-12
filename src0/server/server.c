@@ -7,14 +7,17 @@
 #include <arpa/inet.h>
 
 #include "server.h"
+#include "const.h"
+#include "http.h"
 
-const int MAX_CLIENTS = 8;
-
-void serve(struct sockaddr_in address, byte *file_buffer, int buffer_length)
+void serve(struct sockaddr_in address, packet_t packet)
 {
+    // * init variables
+    const int MAX_RECEIVE = 1024;
     socklen_t address_size = sizeof(address);
-    byte buffer[1024];
+    byte receive_buffer[MAX_RECEIVE];
     char ip_address[INET_ADDRSTRLEN];
+    // * parse IP address to standard human-readable format
     inet_ntop(AF_INET, &(address.sin_addr), ip_address, INET_ADDRSTRLEN);
 
     printf("⟩- maximum clients:\t%d\n", MAX_CLIENTS);
@@ -42,16 +45,20 @@ void serve(struct sockaddr_in address, byte *file_buffer, int buffer_length)
         int client_socket = accept(server_socket, (struct sockaddr *)&address,
                                    (socklen_t *)&address_size);
 
-        // * read from connection
-        int bytes_read = read(client_socket, buffer, 1024);
+        // * get client connection's IP
+        inet_ntop(AF_INET, &(address.sin_addr), ip_address, INET_ADDRSTRLEN);
 
-        // * send a hello message to the port
-        send(client_socket, file_buffer, buffer_length, 0);
+        // * read from connection
+        int bytes_read = read(client_socket, receive_buffer, MAX_RECEIVE);
+
+        // * send the specified packet to the client
+        char *bytes = make_packet(packet);
+        send(client_socket, bytes, MAX_PACKET_SIZE, 0);
 
         // * closing the connected socket
         close(client_socket);
 
-        printf(" ⟩- handled client; file descriptor is %d\n", client_socket);
+        printf(" ⟩- handled client connecting from %s\n", ip_address);
     }
 
     // * closing the listening socket
@@ -60,12 +67,12 @@ void serve(struct sockaddr_in address, byte *file_buffer, int buffer_length)
     printf("⟩- closed server connection\n");
 }
 
-int read_file(char *filename, byte *file_buffer, int buffer_length)
+long read_file(char *filename, byte *file_buffer, int buffer_length)
 {
     FILE *infile = fopen(filename, "rb");
-    fseek(infile, 0L, SEEK_END);
-    int file_length = ftell(infile);
-    rewind(infile);
+    // fseek(infile, 0L, SEEK_END);
+    // int file_length = ftell(infile);
+    // rewind(infile);
     fread(file_buffer, 1, buffer_length, infile);
-    return file_length;
+    return ftell(infile);
 }
