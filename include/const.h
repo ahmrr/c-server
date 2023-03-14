@@ -32,14 +32,4 @@ typedef struct Flag
     handler_t handler;
 } flag_t;
 
-// * Stores program options (exactly 3 bytes in size)
-typedef struct Options
-{
-    struct sockaddr_in address;
-    char *path;
-} options_t;
-
-// * External options variable; defined in file src/cmd.c
-extern options_t options;
-
 #endif

@@ -1,3 +1,4 @@
+#include <time.h>
 #include <stdlib.h>
 
 #include "server.h"
@@ -12,6 +13,9 @@ typedef struct Packet
     char *status;
     char *header;
     char *payload;
+    size_t status_len;
+    size_t header_len;
+    size_t payload_len;
 } packet_t;
 
 // ! BETA
@@ -35,5 +39,20 @@ char *get_content_type(char *filename);
  * @param data a pointer to the packet whose status field needs to be made
  */
 char *make_status(int status);
+/**
+ * @brief Make the HTTP-formatted date based on current_time and store it in dest
+ *
+ * @param dest a char array of length at least 31
+ * @param current_time the current time
+ */
+void make_date(char *dest, struct tm current_time);
+
+#define HEADER_TEMPLATE                       \
+    "Date: %s\n"                              \
+    "Content-Type: %s; charset=UTF-8\n"       \
+    "Content-Length: %lu\n"                   \
+    "Server: C-Server/0.1.0 (Ubuntu/Linux)\n" \
+    "Connection: close\n"                     \
+    "Access-Control-Allow-Origin: *\n\n"
 
 #endif

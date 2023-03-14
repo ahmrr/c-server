@@ -15,6 +15,8 @@ LIBDIR=lib
 
 # * specific output files
 EXE=serve
+TST=test
+DBG=debug
 LIB=libserver.a
 _DEPS=cmd.h const.h http.h util.h server.h
 DEPS=$(patsubst %,$(INCDIR)/%,$(_DEPS))
@@ -42,6 +44,11 @@ build-obj: $(OBJS)
 build-lib: $(LIBDIR)/$(LIB) $(OBJS)
 	$(CC) -o $(EXEDIR)/$(EXE) $< $(CFLAGS) $(LIBFLAG)
 
+# * build debuggable executable
+.PHONY: build-dbg
+build-dbg:
+	$(CC) -o $(EXEDIR)/$(DBG) $(SRCDIR)/* $(CFLAGS) $(LIBFLAG) -g
+
 # * run using user-inputted args
 .PHONY: run
 run:
@@ -50,9 +57,14 @@ run:
 # * clean object files, static library files, and executable files
 .PHONY: clean
 clean:
-	rm -f $(OBJDIR)/*.o $(EXEDIR)/$(EXE) $(LIBDIR)/$(LIB)
+	rm -f $(OBJDIR)/*.o $(EXEDIR)/$(EXE) $(EXEDIR)/$(TST) $(EXEDIR)/$(DBG) $(LIBDIR)/$(LIB)
 
 # * compile test files
 .PHONY: test
 test:
-	$(CC) -o $(EXEDIR)/$@ $(FILES) $(CFLAGS)
+	$(CC) -o $(EXEDIR)/$(TST) $(FILES) $(CFLAGS)
+
+# * compile test files into debuggable executable
+.PHONY: test-dbg
+test-dbg:
+	$(CC) -o $(EXEDIR)/$(TST)-dbg $(FILES) $(CFLAGS) -g

@@ -50,6 +50,7 @@
     "util.h": "c",
     "wayland-server-core.h": "c",
     "in.h": "c",
-    "const.h": "c"
+    "const.h": "c",
+    "server.h": "c"
   }
 }

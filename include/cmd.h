@@ -21,4 +21,14 @@ int file_handler(char *arg);
 // * handles a "config" flag
 // int config_handler(char *arg);
 
+// * Stores program options (exactly 3 bytes in size)
+typedef struct Options
+{
+    struct sockaddr_in address;
+    char *path;
+} options_t;
+
+// * External options variable; defined in file src/cmd.c
+extern options_t options;
+
 #endif
