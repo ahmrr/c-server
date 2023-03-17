@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #include <netinet/in.h>
 
 #ifndef CONST_H_
@@ -12,9 +13,7 @@
 #define MAX_STATUS_SIZE 32
 // * The maximum total size the header of an HTTP packet can have
 #define MAX_HEADER_SIZE 512
-// * The maximum bytes the Content-Length header's value can have
-#define MAX_CL_SIZE 16
-// * The maximum total size a packet can have
+// * The maximum total size an HTTP packet can have
 #define MAX_PACKET_SIZE MAX_STATUS_SIZE + MAX_HEADER_SIZE + MAX_PAYLOAD_SIZE
 // * The maximum number of clients that can be connected at one time
 #define MAX_CLIENTS 8
@@ -30,6 +29,7 @@ typedef struct Flag
 {
     char *variations[4];
     handler_t handler;
+    bool arg;
 } flag_t;
 
 #endif

@@ -6,6 +6,8 @@
 
 int main()
 {
+    // ? -------------------------------------------------------------------- //
+
     // printf("content type of temp.tiff is %s\n", get_content_type("temp.tiff"));
     // printf("content type of temp.json is %s\n", get_content_type("temp.json"));
     // printf("content type of temp.html is %s\n", get_content_type("temp.html"));
@@ -26,24 +28,32 @@ int main()
     // printf("read a total of %lu bytes from test.txt\n", bytes_read);
     // free(bytes);
 
-    size_t n1 = 1UL;
-    size_t n2 = -1UL;
+    // ? -------------------------------------------------------------------- //
 
-    clock_t begin = clock();
+    // size_t n1 = 1UL;
+    // size_t n2 = -1UL;
 
-    int n1_digits = digits(n1);
+    // clock_t begin = clock();
 
-    clock_t end = clock();
+    // int n1_digits = digits(n1);
 
-    double n1_time = (double)(end - begin) / CLOCKS_PER_SEC;
+    // clock_t end = clock();
 
-    begin = clock();
+    // double n1_time = (double)(end - begin) / CLOCKS_PER_SEC;
 
-    int n2_digits = digits(n2);
+    // begin = clock();
 
-    end = clock();
+    // int n2_digits = digits(n2);
 
-    double n2_time = (double)(end - begin) / CLOCKS_PER_SEC;
+    // end = clock();
 
-    printf("n1_time: %lf\nn1_digits: %d\n\nn2_time: %lf\nn2_digits: %d\n", n1_time, n1_digits, n2_time, n2_digits);
+    // double n2_time = (double)(end - begin) / CLOCKS_PER_SEC;
+
+    // printf("n1_time: %lf\nn1_digits: %d\n\nn2_time: %lf\nn2_digits: %d\n", n1_time, n1_digits, n2_time, n2_digits);
+
+    // ? -------------------------------------------------------------------- //
+
+    printf("size of file \"index.html\" is %lu\n", file_size("index.html"));
+
+    // ? -------------------------------------------------------------------- //
 }

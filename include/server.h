@@ -12,13 +12,21 @@
  */
 int handle_request(char *request);
 /**
- * @brief Serve a single file via a TCP socket
+ * @brief Serve a single file via a TCP socket, unbuffered
  *
  * @param address the address to serve from
  * @param file the file to serve
  * @return The status of the function; either EXIT_SUCCESS or EXIT_FAILURE.
  */
 int serve_file(struct sockaddr_in address, char *file);
+/**
+ * @brief Serve a single file via a TCP socket, buffered to RAM
+ *
+ * @param address the address to serve from
+ * @param file the file to serve
+ * @return The status of the function; either EXIT_SUCCESS or EXIT_FAILURE.
+ */
+int serve_file_buffered(struct sockaddr_in address, char *file);
 /**
  * @brief Serve all files in a directory via a TCP socket
  *

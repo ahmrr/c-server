@@ -12,10 +12,11 @@ options_t options = {0};
 
 // * all valid flags, with their corresponding handler function pointers
 const flag_t flags[] = {
-    (flag_t){{"-help", "-h", "--help", "--h"}, &help_handler},
-    (flag_t){{"-port", "-p", "--port", "--p"}, &port_handler},
-    (flag_t){{"-ip", "-i", "--ip", "--i"}, &ip_handler},
-    (flag_t){{"-file", "-f", "--file", "--f"}, &file_handler},
+    (flag_t){{"-help", "-h", "--help", "--h"}, &help_handler, false},
+    (flag_t){{"-port", "-p", "--port", "--p"}, &port_handler, true},
+    (flag_t){{"-ip", "-i", "--ip", "--i"}, &ip_handler, true},
+    (flag_t){{"-file", "-f", "--file", "--f"}, &file_handler, true},
+    (flag_t){{"-load", "-l", "--load", "--l"}, &load_handler, false},
     // ! BETA
     // (flag_t){{"-config", "-c", "--config", "--c"}, &config_handler},
 };
@@ -30,8 +31,9 @@ int parse_arguments(int argc, char *argv[])
 
     for (int i = 1; i < argc; i++)
     {
-        // * obtain the handler for the current "flag"
-        handler_t handler = get_handler(argv[i]);
+        // * obtain the current "flag"
+        flag_t flag = get_flag(argv[i]);
+        handler_t handler = flag.handler;
         // * if the handler exists (flag is valid)
         if (handler != NULL)
         {
@@ -41,9 +43,14 @@ int parse_arguments(int argc, char *argv[])
             // * (and let the handler decide what to do)
             if (i == argc - 1)
                 status = handler("");
-            // * otherwise, call the handler for the function and increment the counter (since the next argument isn't a flag)
+            // * otherwise, call the handler for the function and increment the counter if the flag takes an argument
             else
-                status = handler(argv[++i]);
+            {
+                if (flag.arg)
+                    status = handler(argv[++i]);
+                else
+                    status = handler("");
+            }
 
             // * fail and exit if the status wasn't positive
             if (status != EXIT_SUCCESS)
@@ -60,19 +67,19 @@ int parse_arguments(int argc, char *argv[])
     return EXIT_SUCCESS;
 }
 
-handler_t get_handler(char *flag)
+flag_t get_flag(char *flag)
 {
     // * iterate over every struct of valid flags; if the flag exists in the struct's
-    // * "variations" array, return the handler associated with the flag
+    // * "variations" array, return the flag
     for (int i = 0; i < (int)(sizeof(flags) / sizeof(flag_t)); i++)
         if (!strcmp(flags[i].variations[0], flag) ||
             !strcmp(flags[i].variations[1], flag) ||
             !strcmp(flags[i].variations[2], flag) ||
             !strcmp(flags[i].variations[3], flag))
-            return flags[i].handler;
+            return flags[i];
 
-    // * if no handler was found for the given flag, return an erroring value (NULL)
-    return NULL;
+    // * if no handler was found for the given flag, return an erroring value (0)
+    return (flag_t){0};
 }
 
 int help_handler(char *arg)
@@ -160,6 +167,20 @@ int file_handler(char *arg)
     }
 
     options.path = arg;
+
+    return EXIT_SUCCESS;
+}
+
+int load_handler(char *arg)
+{
+    // * if a flag argument was given, error and exit (since we don't need an argument)
+    if (strcmp(arg, "") != 0)
+    {
+        printf("Error: no flag argument expected, yet argument \"%s\" was specified for help flag.\n", arg);
+        return EXIT_FAILURE;
+    }
+
+    options.buffered = true;
 
     return EXIT_SUCCESS;
 }

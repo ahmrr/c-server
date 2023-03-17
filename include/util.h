@@ -19,11 +19,18 @@ mode_t path_mode(const char *path);
  */
 size_t read_file(const char *file, char **bytes);
 /**
- * @brief Return the number of digits in the number
+ * @brief Return the number of digits in a number
  *
  * @param num the number to count
  * @return The number of digits in the number
  */
 int digits(size_t num);
+/**
+ * @brief Return the size of a file
+ *
+ * @param file the file to analyze
+ * @return The number of bytes in the file
+ */
+size_t file_size(const char *file);
 
 #endif

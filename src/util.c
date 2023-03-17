@@ -47,6 +47,8 @@ size_t read_file(const char *file, char **bytes)
         bytes_index += bytes_read;
     }
 
+    fclose(in);
+
     return bytes_index;
 }
 
@@ -92,4 +94,13 @@ int digits(size_t num)
         return 19;
     else
         return 20;
+}
+
+size_t file_size(const char *file)
+{
+    FILE *in = fopen(file, "rb");
+    fseek(in, 0L, SEEK_END);
+    size_t size = ftell(in);
+    fclose(in);
+    return size;
 }

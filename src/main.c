@@ -50,9 +50,16 @@ int main(int argc, char *argv[])
     // * if the path specified is a regular file
     if (S_ISREG(mode))
     {
-        printf("Serving file \"%s\" from IP %s and port %d\n", options.path, ip_address, ntohs(options.address.sin_port));
-
-        serve_file(options.address, options.path);
+        if (options.buffered)
+        {
+            printf("Serving file \"%s\" from IP %s and port %d, loaded into RAM\n", options.path, ip_address, ntohs(options.address.sin_port));
+            serve_file_buffered(options.address, options.path);
+        }
+        else
+        {
+            printf("Serving file \"%s\" from IP %s and port %d\n", options.path, ip_address, ntohs(options.address.sin_port));
+            serve_file(options.address, options.path);
+        }
     }
     // * otherwise, if the path specified is a directory
     else if (S_ISDIR(mode))
