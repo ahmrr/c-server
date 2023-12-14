@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
     {
         if (options.buffered)
         {
-            printf("Serving file \"%s\" from IP %s and port %d, loaded into RAM\n", options.path, ip_address, ntohs(options.address.sin_port));
+            printf("Serving file \"%s\" from IP %s and port %d, loaded into memory\n", options.path, ip_address, ntohs(options.address.sin_port));
             serve_file_buffered(options.address, options.path);
         }
         else

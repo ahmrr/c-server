@@ -1,8 +1,8 @@
 #include <time.h>
 #include <stdio.h>
 
-// #include "include/http.h"
-#include "include/util.h"
+#include "include/http.h"
+// #include "include/util.h"
 
 int main()
 {
@@ -53,7 +53,12 @@ int main()
 
     // ? -------------------------------------------------------------------- //
 
-    printf("size of file \"index.html\" is %lu\n", file_size("index.html"));
+    // printf("size of file \"index.html\" is %lu\n", file_size("index.html"));
 
     // ? -------------------------------------------------------------------- //
+
+    char packet[] = "GET /http/files/index.html\n";
+
+    struct Request request = parse_request(packet);
+    printf("request method is %s\nrequest endpoint is %s\n", request.method, request.endpoint);
 }

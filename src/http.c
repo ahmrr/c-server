@@ -139,3 +139,15 @@ void make_date(char *dest, struct tm current_time)
             current_time.tm_hour, current_time.tm_min, current_time.tm_sec);
     dest[30] = 0;
 }
+
+struct Request parse_request(char *packet)
+{
+    // ! DEBUG
+    // printf("Parsing packet:\n--------------------------------\n%s--------------------------------\n", packet);
+
+    char *method = strtok(packet, " "),
+         *endpoint = strtok(NULL, " "),
+         *http_version = strtok(NULL, "\n");
+    http_version[strlen(http_version) - 1] = 0;
+    return (struct Request){method, endpoint, http_version};
+}

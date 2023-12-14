@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include <stdbool.h>
 #include <arpa/inet.h>
+#include <sys/epoll.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <sys/sendfile.h>
@@ -28,7 +29,7 @@ int serve_file(struct sockaddr_in address, char *file)
 
     // * initialize variables
     const int MAX_RECEIVE = 4096;
-    byte receive_buffer[MAX_RECEIVE];
+    char receive_buffer[MAX_RECEIVE];
 
     struct sockaddr_in client_address = {0};
     socklen_t client_address_len = sizeof(client_address);
@@ -81,18 +82,33 @@ int serve_file(struct sockaddr_in address, char *file)
 
         ssize_t bytes_read = read(client_socket, receive_buffer, MAX_RECEIVE);
 
-        printf(" - Client sent %ld bytes\n", bytes_read);
+        if (bytes_read == 0)
+            printf(" - Client sent nothing; terminating connection\n");
+        else
+        {
+            struct Request request = parse_request(receive_buffer);
+            printf(" - Client wants to %s %s via %s\n", request.method, request.endpoint, request.http_version);
+            if (strcmp(request.endpoint + 1, file) != 0 && strcmp(request.endpoint + 1, "/favicon.ico") != 0)
+            {
+                printf(" - Resource does not exist; returning 404\n");
+                // * 2 -> 2 bytes of format specifiers
+                // * 30 -> length of date
+                char *send_buffer_404 = malloc(sizeof(RESPONSE_404) - 2 + 30);
+                sprintf(send_buffer_404, RESPONSE_404, make_date()
+                send(client_socket, )
+            }
 
-        clock_t start = clock();
+            clock_t start = clock();
 
-        send(client_socket, send_buffer, send_buffer_size, 0);
-        sendfile(client_socket, in_file, 0, packet.payload_len);
+            send(client_socket, send_buffer, send_buffer_size, 0);
+            sendfile(client_socket, in_file, 0, packet.payload_len);
 
-        clock_t end = clock();
+            clock_t end = clock();
 
-        double time_taken = (double)(end - start) / CLOCKS_PER_SEC;
+            double time_taken = (double)(end - start) / CLOCKS_PER_SEC;
 
-        printf(" - Took %lf msec to send the packet\n", time_taken);
+            printf(" - Took %lf msec to send the packet\n", time_taken * 1000);
+        }
 
         close(client_socket);
 
@@ -106,6 +122,7 @@ int serve_file(struct sockaddr_in address, char *file)
 
     // * free memory allocated for the packet
     free(packet.header);
+    free(send_buffer);
 
     close(in_file);
 
@@ -118,7 +135,7 @@ int serve_file_buffered(struct sockaddr_in address, char *file)
 
     // * initialize variables
     const int MAX_RECEIVE = 4096;
-    byte receive_buffer[MAX_RECEIVE];
+    char receive_buffer[MAX_RECEIVE];
 
     struct sockaddr_in client_address = {0};
     socklen_t client_address_len = sizeof(client_address);
@@ -171,17 +188,23 @@ int serve_file_buffered(struct sockaddr_in address, char *file)
 
         ssize_t bytes_read = read(client_socket, receive_buffer, MAX_RECEIVE);
 
-        printf(" - Client sent %ld bytes\n", bytes_read);
+        if (bytes_read == 0)
+            printf(" - Client sent nothing; terminating connection\n");
+        else
+        {
+            struct Request request = parse_request(receive_buffer);
+            printf(" - Client wants to %s %s via %s\n", request.method, request.endpoint, request.http_version);
 
-        clock_t start = clock();
+            clock_t start = clock();
 
-        send(client_socket, send_buffer, send_buffer_size, 0);
+            send(client_socket, send_buffer, send_buffer_size, 0);
 
-        clock_t end = clock();
+            clock_t end = clock();
 
-        double time_taken = (double)(end - start) / CLOCKS_PER_SEC;
+            double time_taken = (double)(end - start) / CLOCKS_PER_SEC;
 
-        printf(" - Took %lf msec to send the packet\n", time_taken);
+            printf(" - Took %lf msec to send the packet\n", time_taken * 1000);
+        }
 
         close(client_socket);
 
@@ -196,6 +219,7 @@ int serve_file_buffered(struct sockaddr_in address, char *file)
     // * free memory allocated for the packet
     free(packet.header);
     free(packet.payload);
+    free(send_buffer);
 
     return EXIT_SUCCESS;
 }
