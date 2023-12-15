@@ -20,6 +20,7 @@
 
 typedef unsigned char byte;
 typedef unsigned long size;
+// typedef char *str;
 
 // * Function pointer to a handler function
 typedef int (*handler_t)(char *arg);

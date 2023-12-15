@@ -1,0 +1,4 @@
+files=index.html
+buffered=false
+port=8080
+threads=1

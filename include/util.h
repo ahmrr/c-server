@@ -3,6 +3,9 @@
 #ifndef UTIL_H_
 #define UTIL_H_
 
+#define MIN(a, b) (((a) < (b)) ? (a) : (b))
+#define MAX(a, b) (((a) > (b)) ? (a) : (b))
+
 /**
  * @brief Returns path mode for processing
  *
@@ -32,5 +35,21 @@ int digits(size_t num);
  * @return The number of bytes in the file
  */
 size_t file_size(const char *file);
+/**
+ * @brief Converts n chars of str to int
+ *
+ * @param str the string to convert
+ * @param n the number of characters in str to convert
+ * @return int the converted value
+ */
+int atoin(const char *str, int n);
+/**
+ * @brief Converts n chars of str to bool
+ *
+ * @param str the string to convert
+ * @param n the number of characters in str to convert
+ * @return int the converted value
+ */
+int atobn(const char *str, int n);
 
 #endif

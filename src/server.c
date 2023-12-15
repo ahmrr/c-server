@@ -11,10 +11,10 @@
 #include <netinet/in.h>
 #include <sys/sendfile.h>
 
-#include "../include/http.h"
-#include "../include/util.h"
-#include "../include/const.h"
-#include "../include/server.h"
+#include "http.h"
+#include "util.h"
+#include "const.h"
+#include "server.h"
 
 bool volatile keep_serving = true;
 
@@ -94,8 +94,8 @@ int serve_file(struct sockaddr_in address, char *file)
                 // * 2 -> 2 bytes of format specifiers
                 // * 30 -> length of date
                 char *send_buffer_404 = malloc(sizeof(RESPONSE_404) - 2 + 30);
-                sprintf(send_buffer_404, RESPONSE_404, make_date()
-                send(client_socket, )
+                // sprintf(send_buffer_404, RESPONSE_404, make_date()
+                // send(client_socket, )
             }
 
             clock_t start = clock();

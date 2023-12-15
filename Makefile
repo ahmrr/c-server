@@ -18,9 +18,9 @@ EXE=serve
 TST=test
 DBG=debug
 LIB=libserver.a
-_DEPS=cmd.h const.h http.h util.h server.h
+_DEPS=cmd.h const.h http.h util.h server.h config.h
 DEPS=$(patsubst %,$(INCDIR)/%,$(_DEPS))
-_OBJS=main.o cmd.o http.o util.o server.o
+_OBJS=main.o cmd.o http.o util.o server.o config.o
 OBJS=$(patsubst %,$(OBJDIR)/%,$(_OBJS))
 
 # * rules for object and static library files

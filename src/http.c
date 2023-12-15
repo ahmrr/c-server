@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "../include/http.h"
+#include "http.h"
 
 char *get_content_type(char *filename)
 {

@@ -5,7 +5,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#include "../include/util.h"
+#include "util.h"
 
 mode_t path_mode(const char *path)
 {
@@ -104,3 +104,31 @@ size_t file_size(const char *file)
     fclose(in);
     return size;
 }
+
+int atoin(const char *str, int n)
+{
+    int neg = *str == '-';
+    int acc = neg ? 0 : *str - '0';
+    for (int i = 1; i < n; i++)
+        acc = acc * 10 + str[i] - '0';
+    return neg ? -acc : acc;
+}
+
+int atobn(const char *str, int n)
+{
+    if (n == 4)
+        return strncmp(str, "true", n) ? -1 : 1;
+    else if (n == 5)
+        return strncmp(str, "true", n) ? (strncmp(str, "false", n) ? -1 : 0) : 1;
+    else
+        return -1;
+}
+
+// int atoil(const char *str, char c)
+// {
+//     int neg = *str == '-';
+//     int acc = neg ? 0 : *str - '0';
+//     while (*++str != c)
+//         acc = acc * 10 + *str - '0';
+//     return neg ? -acc : acc;
+// }

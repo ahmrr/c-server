@@ -5,8 +5,8 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
-#include "../include/cmd.h"
-#include "../include/const.h"
+#include "cmd.h"
+#include "const.h"
 
 options_t options = {0};
 

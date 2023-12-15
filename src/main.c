@@ -9,10 +9,11 @@
 #include <arpa/inet.h>
 #include <netinet/in.h>
 
-#include "../include/cmd.h"
-#include "../include/util.h"
-#include "../include/const.h"
-#include "../include/server.h"
+#include "cmd.h"
+#include "util.h"
+#include "const.h"
+#include "server.h"
+#include "config.h"
 
 // void stop_serving()
 // {
@@ -33,6 +34,9 @@ int main(int argc, char *argv[])
     int status = parse_arguments(argc, argv);
     if (status != EXIT_SUCCESS)
         return EXIT_FAILURE;
+
+    parse_config("config.txt");
+    return 0;
 
     // * parse IP address to standard human-readable format
     char ip_address[INET_ADDRSTRLEN];
